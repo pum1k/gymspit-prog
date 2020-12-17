@@ -62,6 +62,8 @@ void my_strcat(char *dest, char *src)
     my_strcpy(dest + my_strlen(dest), src);
 }
 
+
+// EXPLAIN
 /* 
  * Function: my_strcmp
  * -------------------
