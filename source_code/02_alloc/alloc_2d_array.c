@@ -38,7 +38,7 @@ int **alloc_2d_array(size_t n, size_t m)
     // fill the rest of pointer array to point to first column of each row
     for (size_t i = 0; i < n; i++)
     {
-        p[i] = p[0] + i * m * sizeof(int);
+        p[i] = p[0] + i * m;
     }
     // return pointer to the pointer array
     return p;
