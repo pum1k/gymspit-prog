@@ -1,3 +1,18 @@
+/*
+ * Tower of Hanoi
+ * --------------
+ * 
+ * Implementation of recursive algorithm that solves tower of Hanoi.
+ * Contains some functions for pretty command line interface.
+ * 
+ * This program also allows you to try to solve the problem
+ * by yourself. 
+ * Controlls: two characters 
+ *  - first is the letter of the rod from which to move a disk
+ *  - secod is the letter of the rod to which should be the disk moved
+ *  - do NOT separete them with anzthing other (e.g. space, comma, ...)
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -9,6 +24,21 @@
  */
 #define AUTOPLAY 1
 
+/*
+ * Typedef: hanoi / hanoi_t
+ * ------------------------
+ * describes the state of the game
+ * 
+ * int *a
+ * int *b
+ * int *c
+ * - pointers to integer list
+ * - these list contain numbers, that describe which discs are on that 
+ *   specific rod
+ * int n
+ * - number of disks in the setup
+ * - also length of lists, that need to be set in *a, *b and *c
+ */
 typedef struct hanoi
 {
     int *a;
@@ -17,10 +47,30 @@ typedef struct hanoi
     int n;
 } hanoi_t;
 
+/* 
+ * Function: constr_hanoi
+ * ----------------------
+ * returns dynamically allocated hanoi structure with the specified size
+ * when you pass reference to another hanoi structure it will copy its data
+ * to the newly allocated structure
+ * 
+ * input:
+ * - int n
+ *   - number of disks (equals the length of allocated arrays)
+ * - hanoi_t *cpy
+ *   - reference to another hanoi structure if you want to copy its data
+ *   - pass NULL if you want the default layout (all disks on the first rod =
+ *     in the list a)
+ * 
+ * return value:
+ * - pointer to the new hanoi structure
+ * - NULL if there was an allocation error
+ */
 hanoi_t *constr_hanoi(int n, hanoi_t *cpy)
 {
     hanoi_t *h;
 
+    // allocate the hanoi structure itself
     if ((h = (hanoi_t *)malloc(sizeof(hanoi_t))) == NULL)
     {
         return NULL;
@@ -28,6 +78,7 @@ hanoi_t *constr_hanoi(int n, hanoi_t *cpy)
 
     h->n = n;
 
+    // then allocate all the list for storing the game state
     if ((h->a = (int *)malloc(sizeof(int) * n)) == NULL)
     {
         free(h);
@@ -49,6 +100,8 @@ hanoi_t *constr_hanoi(int n, hanoi_t *cpy)
         return NULL;
     }
 
+    // copy data from the supplied hanoi structure
+    // or fill in the default values if it wasn't supplied
     for (int i = 0; i < n; i++)
     {
         if (cpy == NULL)
@@ -68,6 +121,16 @@ hanoi_t *constr_hanoi(int n, hanoi_t *cpy)
     return h;
 }
 
+/*
+ * Function: free_hanoi
+ * --------------------
+ * frees the dynamically allocated hanoi structure, including arrays 
+ * refferenced by pointers a, b and c
+ * 
+ * input:
+ * - hanoi_t *h
+ *   - hanoi structure to be freed
+ */
 void free_hanoi(hanoi_t *h)
 {
     free(h->a);
