@@ -81,7 +81,7 @@ int *get_random_array(int size)
 {
     int *array;
 
-    if ((array = (int *)malloc(sizeof(int))) == NULL)
+    if ((array = (int *)malloc(sizeof(int) * size)) == NULL)
     {
         return NULL;
     }
